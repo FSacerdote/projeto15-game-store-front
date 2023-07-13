@@ -1,28 +1,31 @@
 import { styled } from "styled-components"
 import Game from "../components/Game"
 import { useEffect, useState } from "react"
+import NavBar from "../Components/NavBar"
+import axios from "axios"
 
 export default function HomePage(){
 
     const [games, setGames] = useState([])
 
     useEffect(()=>{
-
+        axios.get(`${import.meta.env.VITE_API_URL}/games`)
+            .then((resposta)=>{
+                setGames(resposta.data.games)
+            })
+            .catch((erro)=>console.log(erro))
     }, [])
     
     return(
         <Home>
-            <Header>PlaceHolder</Header>
+            <NavBar/>
             <Corpo>
                 <Topo>
                     <h1>Jogos Disponíveis</h1>
                     <button>+</button>
                 </Topo>
                 <GamesContainer>
-                    <Game></Game>
-                    <Game></Game>
-                    <Game></Game>
-                    <Game></Game>
+                    {games.map((game)=><Game/>)}
                 </GamesContainer>
             </Corpo>
         </Home>
@@ -37,6 +40,7 @@ const Home = styled.div`
     width:100%;
 `
 const Corpo = styled.div`
+    margin-top: 70px;
     padding-top: 10px;
     width: 1250px;
 `

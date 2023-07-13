@@ -3,8 +3,6 @@ import HomePage from "./pages/HomePage"
 import ResetCss from "./style/reset"
 import GlobalStyle from "./style/globalStyle"
 import GamePage from "./pages/GamePage"
-
-import NavBar from "./Components/NavBar";
 import Cart from "./Pages/Cart";
 
 function App() {
@@ -14,7 +12,7 @@ function App() {
       <GlobalStyle/>
       <Routes>
         <Route path="/game/:id" element={<GamePage/>}/>
-        <Route path="/" />
+        <Route path="/" element={<HomePage/>}/>
         <Route path="/carrinho" element={<Cart />} />
       </Routes>
     </BrowserRouter>
