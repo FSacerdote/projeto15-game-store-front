@@ -3,8 +3,10 @@ import Game from "../components/Game"
 import { useEffect, useState } from "react"
 import NavBar from "../Components/NavBar"
 import axios from "axios"
+import Produto from "../components/Produto"
+import { useNavigate } from "react-router"
 
-export default function HomePage(){
+export default function SuaLoja(){
 
     const [games, setGames] = useState([])
 
@@ -17,21 +19,23 @@ export default function HomePage(){
     }, [])
     
     return(
-        <Home>
+        <Loja>
             <NavBar/>
             <Corpo>
                 <Topo>
-                    {games.length !== 0?<h1>Jogos Disponíveis</h1>:<h1>Nenhum jogo disponível no momento</h1>}
+                    <h1>Seus jogos</h1>
+                    <button onClick={()=> useNavigate("/novo-jogo")}>+</button>
                 </Topo>
                 <GamesContainer>
-                    {games.map((game)=><Game/>)}
+                    {/* {games.map((game)=><Produto/>)} */}
+                    <Produto/>
                 </GamesContainer>
             </Corpo>
-        </Home>
+        </Loja>
     )
 }
 
-const Home = styled.div`
+const Loja = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -48,6 +52,18 @@ const Topo = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    button{
+        font-size: 20px;
+        border-radius: 3px;
+        border: none;
+        width: 30px;
+        height: 30px;
+        background-color: #0a0c37ff;
+        color: white;
+        &:hover{
+            cursor: pointer;
+        }
+    }
     h1{
         margin-bottom: 10px;
         font-size: 20px;
