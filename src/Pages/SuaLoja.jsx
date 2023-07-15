@@ -34,7 +34,7 @@ export default function SuaLoja(){
                 </Topo>
                 <GamesContainer>
                     {/* {games.map((game)=><Produto/>)} */}
-                    <Produto/>
+                    <Produto id={"64b09199958f9440d29d15ff"}/>
                 </GamesContainer>
             </Corpo>
         </Loja>

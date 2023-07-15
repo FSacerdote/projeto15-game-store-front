@@ -1,7 +1,7 @@
 import { styled } from "styled-components"
 import { useNavigate} from "react-router-dom"
 
-export default function Produto(){
+export default function Produto({id}){
 
     const navigate = useNavigate()
 
@@ -13,7 +13,7 @@ export default function Produto(){
             </Banner>
             <Footer>
                 <Editar>
-                    <span>Editar</span>
+                    <span onClick={()=>navigate(`/editar/${id}`)}>Editar</span>
                 </Editar>
                 <Deletar>
                     <span>X</span>
