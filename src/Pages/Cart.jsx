@@ -1,28 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useState, useContext } from 'react';
 import { styled } from 'styled-components';
 
 import NavBar from '../Components/NavBar';
+import { ItemsContext } from '../Contexts/ItemsContext';
+import { Link } from 'react-router-dom';
+import finishOrder from '../services/finishOrder';
 
-const handleSubmit = () => {
-
-}
-
-const Item = ({ setItemsQtde, itemId }) => {
-    const [thisItemQtde, setThisItemQtde] = useState(1);
+const Item = ({ item: { itemId, itemName, itemPrice, itemImgUrl, itemQtde },
+    setSelectedItems }) => {
+    const [thisItemQtde, setThisItemQtde] = useState(itemQtde);
 
     const handleClick = (action) => {
         if (thisItemQtde === 0 && !action) return;
 
         setThisItemQtde(prev => prev + (action ? 1 : -1));
-        setItemsQtde(prev => ({
-            ...prev, [itemId]: {
-                ...prev[itemId], qtde: prev[itemId].qtde + (action ? 1 : -1)
-            }
-        }));
+        setSelectedItems(prev => ({
+            items: [...prev.items
+                .map(item => item.itemId === itemId
+                    ? { ...item, itemQtde: item.itemQtde + (action ? 1 : -1) }
+                    : { ...item })
+            ], total: prev.total + (action ? 1 : -1) * itemPrice,
+        }))
     };
 
     return <ItemContainer>
-        <img src="https://images.alphacoders.com/605/605592.png" alt="ph" />
+        <img src={itemImgUrl} alt={itemName} />
+        <div>
+            <h2>{itemName}</h2>
+            <h2>R$ {itemPrice.toFixed(2)}</h2>
+        </div>
         <div style={{
             display: "flex",
             flexDirection: "column",
@@ -36,42 +42,47 @@ const Item = ({ setItemsQtde, itemId }) => {
 }
 
 const Cart = () => {
-    const [itemsQtde, setItemsQtde] = useState({
-        "10": {
-            banana: 2, qtde: 1, preco: 10,
-        },
-        "11": {
-            banana: 20, qtde: 0, preco: 5,
-        }
-    });
+    const { selectedItems, setSelectedItems } = useContext(ItemsContext);
     const [formData, setFormData] = useState({
         nome: "",
         cep: "",
         frete: "gratis",
     });
 
-    const itemId = "10";
+    const handleSubmit = (ev) => {
+        ev.preventDefault();
+
+        finishOrder(formData, selectedItems);
+    }
+
     return (
         <>
             <NavBar />
             <Container>
-                <Item setItemsQtde={setItemsQtde} itemId={itemId}></Item>
-                <form onSubmit={handleSubmit} onChange={ev => setFormData(prev => ({
+                {
+                    selectedItems.items.length > 0 ?
+                        selectedItems.items.map(item => <Item key={item.itemId} item={item} setSelectedItems={setSelectedItems} />)
+                        : <h1>Seu carrinho está vazio... <br /><Link to="/">Confira os jogos disponíveis no catálogo!</Link></h1>
+                }
+                <form onSubmit={ev => handleSubmit(ev)} onChange={ev => setFormData(prev => ({
                     ...prev, [ev.target.name]: ev.target.value
                 }))}>
                     <label htmlFor="nome">Nome completo:</label>
                     <input type="text" id="nome" name="nome" />
+
                     <label htmlFor="cep">CEP:</label>
                     <input type="text" id="cep" name="cep" />
-                    <label htmlFor="frete">Frete</label>
-                    <select name="frete" id="frete">
-                        <option value="gratis">Gratis (5 dias)</option>
-                        <option value="sedex">Sedex (2 dias)</option>
-                    </select>
+                    <div>
+                        <input type="radio" value="gratis" id="gratis" name="frete" />
+                        <label htmlFor="gratis">Gratis (7 dias)</label>
+                    </div>
+                    <div>
+                        <input type="radio" value="sedex" id="sedex" name="frete" />
+                        <label htmlFor="sedex">Sedex R$ 15,00 (3 dias)</label>
+                    </div>
+
                     <button>Finalizar pedido</button>
-                    <h3 name="total">Total: {Object.keys(itemsQtde).reduce(
-                        (acc, curr) => itemsQtde[curr].qtde * itemsQtde[curr].preco + acc, 0
-                    )}</h3>
+                    <h3 name="total">Total: {selectedItems.total}</h3>
                 </form>
             </Container>
         </>
@@ -104,7 +115,7 @@ const Container = styled.div`
         }
     }
 
-    input, select {
+    input {
             color: #fff;
             font-size: 1.25rem;
             line-height: 1;
@@ -132,10 +143,6 @@ const Container = styled.div`
                 -webkit-appearance: none;
                 margin: 0;
             }
-        }
-
-        select {
-            /* color: white; */
         }
 
         button {
@@ -176,6 +183,18 @@ const Container = styled.div`
         button {
             margin-top: 20px;
         }
+
+        div {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        #gratis, #sedex {
+            width: 20px;
+            height: 20px;
+        }
     }
 `;
 
@@ -183,12 +202,22 @@ const ItemContainer = styled.div`
     display: flex;
     justify-content: space-around;
     align-items: center;
-    gap: 50px;
+    gap: 45px;
 
     div {
         display: flex;
         flex-direction: column;
         align-items: center;
+        gap: 15px;
+
+        h2 {
+            &:nth-child(1) {
+                font-weight: 700;
+            }
+
+            margin: -5px;
+            color: #ff61c6ff;
+        }
 
         button {
             width: 50px;
@@ -196,9 +225,9 @@ const ItemContainer = styled.div`
 
         h3 {
             width: 30px;
-            height: 20px;
+            height: 30px;
             border-radius: 50%;
-            padding: 10px;
+            padding: 10px 5px 25px;
             margin: -3px 0;
             text-align: center;
             color: #FFF;
