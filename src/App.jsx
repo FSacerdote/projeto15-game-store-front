@@ -7,6 +7,7 @@ import Cart from "./Pages/Cart";
 import SuaLoja from "./pages/SuaLoja"
 import NovoJogo from "./pages/NovoJogo"
 import { UserContextProvider } from "./components/UserContext"
+import Editar from "./pages/Editar"
 
 function App() {
   return (
@@ -20,6 +21,8 @@ function App() {
           <Route path="/carrinho" element={<Cart />} />
           <Route path="/sualoja" element={<SuaLoja />} />
           <Route path="/novo-jogo" element={<NovoJogo />} />
+          <Route path="/novo-jogo" element={<NovoJogo />} />
+          <Route path="/editar/:id" element={<Editar />} />
         </Routes>
       </UserContextProvider>
     </BrowserRouter>
