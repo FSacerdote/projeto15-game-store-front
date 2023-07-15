@@ -1,17 +1,22 @@
 import { styled } from "styled-components"
 import Game from "../components/Game"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import NavBar from "../Components/NavBar"
 import axios from "axios"
 import Produto from "../components/Produto"
 import { useNavigate } from "react-router"
+import { UserContext } from "../components/UserContext"
 
 export default function SuaLoja(){
 
     const [games, setGames] = useState([])
     const navigate = useNavigate()
+    const {token} = useContext(UserContext)
 
     useEffect(()=>{
+        if(!token){
+            navigate("/login")
+        }
         axios.get(`${import.meta.env.VITE_API_URL}/games`)
             .then((resposta)=>{
                 setGames(resposta.data.games)

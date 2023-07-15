@@ -1,8 +1,9 @@
 import { styled } from "styled-components"  
 import NavBar from "../Components/NavBar"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import { UserContext } from "../components/UserContext"
 
 export default function NovoJogo(){
 
@@ -13,16 +14,23 @@ export default function NovoJogo(){
     const [genero, setGenero] = useState("")
 
     const navigate = useNavigate()
+    const {token} = useContext(UserContext)
+    const config = {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    }
 
     useEffect(()=>{
-        // adicionar redirecionamento para pagina de login caso o usuario não estiver logado
+        if(!token){
+            navigate("/login")
+        }
     }, [])
 
     function addGame(event){
         event.preventDefault()
         const newGame = {titulo, preco, capa, descricao, genero}
-        // adicionar o usuario ao post
-        axios.post(`${import.meta.env.VITE_API_URL}/games`, newGame)
+        axios.post(`${import.meta.env.VITE_API_URL}/games`, newGame, config)
             .then(()=>navigate("/sualoja"))
             .catch((erro)=> console.log(erro.message))
     }
