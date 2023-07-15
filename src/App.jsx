@@ -6,20 +6,27 @@ import ItemsContextProvider from "./Contexts/ItemsContext";
 import HomePage from "./Pages/HomePage";
 import GamePage from "./Pages/GamePage";
 import Cart from "./Pages/Cart";
+import SuaLoja from "./pages/SuaLoja"
+import NovoJogo from "./pages/NovoJogo"
+import { UserContextProvider } from "./components/UserContext"
 
 
 
 function App() {
   return (
     <BrowserRouter>
-      <ResetCss />
-      <GlobalStyle />
       <ItemsContextProvider>
-        <Routes>
-          <Route path="/game/:id" element={<GamePage />} />
-          <Route path="/" element={<HomePage />} />
-          <Route path="/carrinho" element={<Cart />} />
-        </Routes>
+        <UserContextProvider>
+          <ResetCss/>
+          <GlobalStyle/>
+          <Routes>
+            <Route path="/game/:id" element={<GamePage/>}/>
+            <Route path="/" element={<HomePage/>}/>
+            <Route path="/carrinho" element={<Cart />} />
+            <Route path="/sualoja" element={<SuaLoja />} />
+            <Route path="/novo-jogo" element={<NovoJogo />} />
+          </Routes>
+        </UserContextProvider>
       </ItemsContextProvider>
     </BrowserRouter>
   )

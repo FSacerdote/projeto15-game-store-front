@@ -13,7 +13,7 @@ export default function HomePage() {
             .then((resposta) => {
                 setGames(resposta.data.games)
             })
-            .catch((erro) => console.log(erro))
+            .catch((erro)=>console.log(erro.message))
     }, [])
 
     return (
@@ -21,8 +21,7 @@ export default function HomePage() {
             <NavBar />
             <Corpo>
                 <Topo>
-                    <h1>Jogos Disponíveis</h1>
-                    <button>+</button>
+                    {games.length !== 0?<h1>Jogos Disponíveis</h1>:<h1>Nenhum jogo disponível no momento</h1>}
                 </Topo>
                 <GamesContainer>
                     {games.map((game) => <Game />)}
@@ -38,6 +37,7 @@ const Home = styled.div`
     align-items: center;
     height: 100vh;
     width:100%;
+    background-color: #375971ff;
 `
 const Corpo = styled.div`
     margin-top: 70px;
@@ -49,18 +49,6 @@ const Topo = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    button{
-        font-size: 20px;
-        border-radius: 3px;
-        border: none;
-        width: 30px;
-        height: 30px;
-        background-color: #0a0c37ff;
-        color: white;
-        &:hover{
-            cursor: pointer;
-        }
-    }
     h1{
         margin-bottom: 10px;
         font-size: 20px;
@@ -70,10 +58,4 @@ const Topo = styled.div`
 const GamesContainer = styled.div`
     display: flex;
     gap: 20px;
-`
-
-const Header = styled.div`
-    width: 100%;
-    height: 80px;
-    background-color: black;
 `
