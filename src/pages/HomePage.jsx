@@ -13,7 +13,7 @@ export default function HomePage(){
             .then((resposta)=>{
                 setGames(resposta.data.games)
             })
-            .catch((erro)=>console.log(erro))
+            .catch((erro)=>console.log(erro.message))
     }, [])
     
     return(
@@ -37,6 +37,7 @@ const Home = styled.div`
     align-items: center;
     height: 100vh;
     width:100%;
+    background-color: #375971ff;
 `
 const Corpo = styled.div`
     margin-top: 70px;

@@ -9,13 +9,14 @@ import { useNavigate } from "react-router"
 export default function SuaLoja(){
 
     const [games, setGames] = useState([])
+    const navigate = useNavigate()
 
     useEffect(()=>{
         axios.get(`${import.meta.env.VITE_API_URL}/games`)
             .then((resposta)=>{
                 setGames(resposta.data.games)
             })
-            .catch((erro)=>console.log(erro))
+            .catch((erro)=>console.log(erro.message))
     }, [])
     
     return(
@@ -24,7 +25,7 @@ export default function SuaLoja(){
             <Corpo>
                 <Topo>
                     <h1>Seus jogos</h1>
-                    <button onClick={()=> useNavigate("/novo-jogo")}>+</button>
+                    <button onClick={()=> navigate("/novo-jogo")}>+</button>
                 </Topo>
                 <GamesContainer>
                     {/* {games.map((game)=><Produto/>)} */}
@@ -41,6 +42,7 @@ const Loja = styled.div`
     align-items: center;
     height: 100vh;
     width:100%;
+    background-color: #375971ff;
 `
 const Corpo = styled.div`
     margin-top: 70px;

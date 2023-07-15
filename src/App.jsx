@@ -5,6 +5,7 @@ import GlobalStyle from "./style/globalStyle"
 import GamePage from "./pages/GamePage"
 import Cart from "./Pages/Cart";
 import SuaLoja from "./pages/SuaLoja"
+import NovoJogo from "./pages/NovoJogo"
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
         <Route path="/" element={<HomePage/>}/>
         <Route path="/carrinho" element={<Cart />} />
         <Route path="/sualoja" element={<SuaLoja />} />
-        <Route path="/novo-jogo" element={<SuaLoja />} />
+        <Route path="/novo-jogo" element={<NovoJogo />} />
       </Routes>
     </BrowserRouter>
   )
