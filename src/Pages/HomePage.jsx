@@ -1,30 +1,30 @@
 import { styled } from "styled-components"
-import Game from "../components/Game"
+import Game from "../Components/Game"
 import { useEffect, useState } from "react"
 import NavBar from "../Components/NavBar"
 import axios from "axios"
 
-export default function HomePage(){
+export default function HomePage() {
 
     const [games, setGames] = useState([])
 
-    useEffect(()=>{
+    useEffect(() => {
         axios.get(`${import.meta.env.VITE_API_URL}/games`)
-            .then((resposta)=>{
+            .then((resposta) => {
                 setGames(resposta.data.games)
             })
             .catch((erro)=>console.log(erro.message))
     }, [])
-    
-    return(
+
+    return (
         <Home>
-            <NavBar/>
+            <NavBar />
             <Corpo>
                 <Topo>
                     {games.length !== 0?<h1>Jogos Disponíveis</h1>:<h1>Nenhum jogo disponível no momento</h1>}
                 </Topo>
                 <GamesContainer>
-                    {games.map((game)=><Game/>)}
+                    {games.map((game) => <Game />)}
                 </GamesContainer>
             </Corpo>
         </Home>
