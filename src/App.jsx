@@ -10,7 +10,8 @@ import SuaLoja from "./pages/SuaLoja"
 import NovoJogo from "./pages/NovoJogo"
 import { UserContextProvider } from "./components/UserContext"
 import Editar from "./pages/Editar"
-import { SignUpPage, SignInPage } from "./pages/SignUpPage";
+import SignUpPage from "./pages/SignUpPage";
+import SignInPage from "./pages/SignInPage";
 
 
 function App() {
