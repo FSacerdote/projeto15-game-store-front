@@ -10,7 +10,7 @@ import SuaLoja from "./pages/SuaLoja"
 import NovoJogo from "./pages/NovoJogo"
 import { UserContextProvider } from "./components/UserContext"
 import Editar from "./pages/Editar"
-
+import { SignUpPage, SignInPage } from "./pages/SignUpPage";
 
 
 function App() {
@@ -23,6 +23,8 @@ function App() {
           <Routes>
             <Route path="/game/:id" element={<GamePage />} />
             <Route path="/" element={<HomePage />} />
+            <Route path="/cadastro" element={<SignUpPage />} />
+            <Route path="/login" element={<SignInPage />} />
             <Route path="/carrinho" element={<Cart />} />
             <Route path="/sualoja" element={<SuaLoja />} />
             <Route path="/novo-jogo" element={<NovoJogo />} />
