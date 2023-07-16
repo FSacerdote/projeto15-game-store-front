@@ -1,12 +1,12 @@
-import { styled } from "styled-components"  
-import NavBar from "../Components/NavBar"
+import { styled } from "styled-components"
+import NavBar from "../components/NavBar"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { useNavigate, useParams } from "react-router-dom"
 
-export default function Editar(){
+export default function Editar() {
 
-    const {id} = useParams()
+    const { id } = useParams()
 
     const [titulo, setTitulo] = useState("")
     const [preco, setPreco] = useState("")
@@ -16,41 +16,41 @@ export default function Editar(){
 
     const navigate = useNavigate()
 
-    useEffect(()=>{
+    useEffect(() => {
         axios.get(`${import.meta.env.VITE_API_URL}/game/${id}`)
-            .then((response)=>{
+            .then((response) => {
                 setTitulo(response.data.titulo)
                 setPreco(response.data.valor)
                 setDescricao(response.data.descricao)
                 setCapa(response.data.capa)
                 setGenero(response.data.genero)
             })
-            .catch((erro)=> console.log(erro.message))
+            .catch((erro) => console.log(erro.message))
     }, [])
 
-    function editGame(event){
+    function editGame(event) {
         event.preventDefault()
-        const gameEditado = {titulo, preco, descricao, capa, genero}
+        const gameEditado = { titulo, preco, descricao, capa, genero }
         axios.put(`${import.meta.env.VITE_API_URL}/editar/${id}`, gameEditado)
-            .then(()=>navigate("/sualoja"))
-            .catch((erro)=> console.log(erro.message))
+            .then(() => navigate("/sualoja"))
+            .catch((erro) => console.log(erro.message))
     }
 
 
-    return(
+    return (
         <Pagina>
-           {/*  <Container>   */}  
-                <h1>Insira os novos dados</h1>
-                <Form onSubmit={editGame}>
-                    <input type="text" placeholder="Titulo" value={titulo} onChange={(event)=> setTitulo(event.target.value)} required/>
-                    <input type="text" placeholder="Preço" value={preco} onChange={(event)=> setPreco(event.target.value)} required/>
-                    <input type="text" placeholder="Descrição" value={descricao} onChange={(event)=> setDescricao(event.target.value)} required/>
-                    <input type="text" placeholder="URl da imagem de capa" value={capa} onChange={(event)=> setCapa(event.target.value)} required/>
-                    <input type="text" placeholder="Gênero" value={genero} onChange={(event)=> setGenero(event.target.value)} required/>
-                    <button type="submit">Confirmar alteações</button>
-                </Form>
+            {/*  <Container>   */}
+            <h1>Insira os novos dados</h1>
+            <Form onSubmit={editGame}>
+                <input type="text" placeholder="Titulo" value={titulo} onChange={(event) => setTitulo(event.target.value)} required />
+                <input type="text" placeholder="Preço" value={preco} onChange={(event) => setPreco(event.target.value)} required />
+                <input type="text" placeholder="Descrição" value={descricao} onChange={(event) => setDescricao(event.target.value)} required />
+                <input type="text" placeholder="URl da imagem de capa" value={capa} onChange={(event) => setCapa(event.target.value)} required />
+                <input type="text" placeholder="Gênero" value={genero} onChange={(event) => setGenero(event.target.value)} required />
+                <button type="submit">Confirmar alteações</button>
+            </Form>
             {/* </Container> */}
-            <NavBar/>
+            <NavBar />
         </Pagina>
     )
 }

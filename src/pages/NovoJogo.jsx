@@ -1,11 +1,11 @@
-import { styled } from "styled-components"  
-import NavBar from "../Components/NavBar"
+import { styled } from "styled-components"
+import NavBar from "../components/NavBar"
 import { useContext, useEffect, useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import { UserContext } from "../components/UserContext"
 
-export default function NovoJogo(){
+export default function NovoJogo() {
 
     const [titulo, setTitulo] = useState("")
     const [preco, setPreco] = useState("")
@@ -14,42 +14,42 @@ export default function NovoJogo(){
     const [genero, setGenero] = useState("")
 
     const navigate = useNavigate()
-    const {token} = useContext(UserContext)
+    const { token } = useContext(UserContext)
     const config = {
-        headers:{
+        headers: {
             Authorization: `Bearer ${token}`
         }
     }
 
-    useEffect(()=>{
-        if(!token){
+    useEffect(() => {
+        if (!token) {
             navigate("/login")
         }
     }, [])
 
-    function addGame(event){
+    function addGame(event) {
         event.preventDefault()
-        const newGame = {titulo, preco, capa, descricao, genero}
+        const newGame = { titulo, preco, capa, descricao, genero }
         axios.post(`${import.meta.env.VITE_API_URL}/games`, newGame, config)
-            .then(()=>navigate("/sualoja"))
-            .catch((erro)=> console.log(erro.message))
+            .then(() => navigate("/sualoja"))
+            .catch((erro) => console.log(erro.message))
     }
 
 
-    return(
+    return (
         <Pagina>
-           {/*  <Container>   */}  
-                <h1>NOVO JOGO</h1>
-                <Form onSubmit={addGame}>
-                    <input type="text" placeholder="Titulo" value={titulo} onChange={(event)=> setTitulo(event.target.value)} required/>
-                    <input type="text" placeholder="Preço" value={preco} onChange={(event)=> setPreco(event.target.value)} required/>
-                    <input type="text" placeholder="Descrição" value={descricao} onChange={(event)=> setDescricao(event.target.value)} required/>
-                    <input type="text" placeholder="URl da imagem de capa" value={capa} onChange={(event)=> setCapa(event.target.value)} required/>
-                    <input type="text" placeholder="Gênero" value={genero} onChange={(event)=> setGenero(event.target.value)} required/>
-                    <button type="submit">Adicionar jogo</button>
-                </Form>
+            {/*  <Container>   */}
+            <h1>NOVO JOGO</h1>
+            <Form onSubmit={addGame}>
+                <input type="text" placeholder="Titulo" value={titulo} onChange={(event) => setTitulo(event.target.value)} required />
+                <input type="text" placeholder="Preço" value={preco} onChange={(event) => setPreco(event.target.value)} required />
+                <input type="text" placeholder="Descrição" value={descricao} onChange={(event) => setDescricao(event.target.value)} required />
+                <input type="text" placeholder="URl da imagem de capa" value={capa} onChange={(event) => setCapa(event.target.value)} required />
+                <input type="text" placeholder="Gênero" value={genero} onChange={(event) => setGenero(event.target.value)} required />
+                <button type="submit">Adicionar jogo</button>
+            </Form>
             {/* </Container> */}
-            <NavBar/>
+            <NavBar />
         </Pagina>
     )
 }

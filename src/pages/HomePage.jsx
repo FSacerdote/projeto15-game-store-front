@@ -1,7 +1,7 @@
 import { styled } from "styled-components"
-import Game from "../Components/Game"
+import Game from "../components/Game"
 import { useEffect, useState } from "react"
-import NavBar from "../Components/NavBar"
+import NavBar from "../components/NavBar"
 import axios from "axios"
 
 export default function HomePage() {
@@ -13,7 +13,7 @@ export default function HomePage() {
             .then((resposta) => {
                 setGames(resposta.data.games)
             })
-            .catch((erro)=>console.log(erro.message))
+            .catch((erro) => console.log(erro.message))
     }, [])
 
     return (
@@ -21,7 +21,7 @@ export default function HomePage() {
             <NavBar />
             <Corpo>
                 <Topo>
-                    {games.length !== 0?<h1>Jogos Disponíveis</h1>:<h1>Nenhum jogo disponível no momento</h1>}
+                    {games.length !== 0 ? <h1>Jogos Disponíveis</h1> : <h1>Nenhum jogo disponível no momento</h1>}
                 </Topo>
                 <GamesContainer>
                     {games.map((game) => <Game />)}
