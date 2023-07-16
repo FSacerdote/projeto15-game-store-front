@@ -24,7 +24,7 @@ export default function HomePage() {
                     {games.length !== 0 ? <h1>Jogos Disponíveis</h1> : <h1>Nenhum jogo disponível no momento</h1>}
                 </Topo>
                 <GamesContainer>
-                    {games.map((game) => <Game key={game._id} game={game}/>)}
+                    {games.map((game) => <Game key={game._id} game={game} />)}
                 </GamesContainer>
             </Corpo>
         </Home>
@@ -42,7 +42,7 @@ const Home = styled.div`
 const Corpo = styled.div`
     margin-top: 70px;
     padding-top: 10px;
-    width: 1250px;
+    max-width: 1250px;
 `
 
 const Topo = styled.div`

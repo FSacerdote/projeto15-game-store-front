@@ -51,7 +51,7 @@ const Loja = styled.div`
 const Corpo = styled.div`
     margin-top: 70px;
     padding-top: 10px;
-    width: 1250px;
+    max-width: 1250px;
 `
 
 const Topo = styled.div`
