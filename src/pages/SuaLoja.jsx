@@ -33,7 +33,7 @@ export default function SuaLoja() {
                     <button onClick={() => navigate("/novo-jogo")}>+</button>
                 </Topo>
                 <GamesContainer>
-                   {games.map((game)=><Produto key={game._id} game={game}/>)}
+                    {games.map((game)=><Produto key={game._id} game={game}/>)}
                 </GamesContainer>
             </Corpo>
         </Loja>
