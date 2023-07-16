@@ -7,7 +7,7 @@ export default function Game(){
 
     return(
         <GameContainer>
-            <Banner onClick={()=>navigate("/game/10")}>
+            <Banner onClick={()=>navigate("/game/64b09199958f9440d29d15ff")}>
                 <img src="https://files.tecnoblog.net/wp-content/uploads/2019/04/days-gone.jpg" alt="" />
                 <Titulo>Days Gone</Titulo>
             </Banner>
