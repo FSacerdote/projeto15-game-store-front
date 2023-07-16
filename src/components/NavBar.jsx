@@ -25,10 +25,10 @@ const NavBar = () => {
             scrolldiff={scrollDiff}
         >
             <Link to="/sualoja">Sua Loja</Link>
-            <Link>Categorias</Link>
+            <Link to="/">Home</Link>
             <input type="text" />
             <Link id="cart" to="/carrinho">Carrinho</Link>
-            <Link>Login/Cadastro</Link>
+            <Link to="/login">Login/Cadastro</Link>
         </Container>
     )
 }

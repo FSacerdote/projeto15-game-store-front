@@ -42,7 +42,7 @@ const Home = styled.div`
 const Corpo = styled.div`
     margin-top: 70px;
     padding-top: 10px;
-    max-width: 1250px;
+    width: 1250px;
 `
 
 const Topo = styled.div`
