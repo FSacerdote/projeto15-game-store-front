@@ -29,7 +29,7 @@ export default function NovoJogo() {
 
     function addGame(event) {
         event.preventDefault()
-        const newGame = { titulo, preco, capa, descricao, genero }
+        const newGame = {titulo, valor: Number(preco.replace(",",".")).toFixed(2), capa, descricao, genero}
         axios.post(`${import.meta.env.VITE_API_URL}/games`, newGame, config)
             .then(() => navigate("/sualoja"))
             .catch((erro) => console.log(erro.message))
