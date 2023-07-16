@@ -1,38 +1,40 @@
 import { styled } from "styled-components"
+import Game from "../components/Game"
 import { useContext, useEffect, useState } from "react"
-import NavBar from "../Components/NavBar"
+import NavBar from "../components/NavBar"
 import axios from "axios"
-import Produto from "../Components/Produto"
+import Produto from "../components/Produto"
 import { useNavigate } from "react-router"
-import { UserContext } from "../Components/UserContext"
+import { UserContext } from "../components/UserContext"
 
-export default function SuaLoja(){
+export default function SuaLoja() {
 
     const [games, setGames] = useState([])
     const navigate = useNavigate()
-    const {token} = useContext(UserContext)
+    const { token } = useContext(UserContext)
 
-    useEffect(()=>{
-        if(!token){
+    useEffect(() => {
+        if (!token) {
             navigate("/login")
         }
         axios.get(`${import.meta.env.VITE_API_URL}/games`)
-            .then((resposta)=>{
+            .then((resposta) => {
                 setGames(resposta.data.games)
             })
-            .catch((erro)=>console.log(erro.message))
+            .catch((erro) => console.log(erro.message))
     }, [])
-    
-    return(
+
+    return (
         <Loja>
-            <NavBar/>
+            <NavBar />
             <Corpo>
                 <Topo>
                     <h1>Seus jogos</h1>
-                    <button onClick={()=> navigate("/novo-jogo")}>+</button>
+                    <button onClick={() => navigate("/novo-jogo")}>+</button>
                 </Topo>
                 <GamesContainer>
-                    {games.map((game)=><Produto key={game._id} game={game}/>)}
+                    {/* {games.map((game)=><Produto/>)} */}
+                    <Produto id={"64b09199958f9440d29d15ff"} />
                 </GamesContainer>
             </Corpo>
         </Loja>
