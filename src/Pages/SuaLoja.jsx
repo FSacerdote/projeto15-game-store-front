@@ -1,11 +1,10 @@
 import { styled } from "styled-components"
-import Game from "../components/Game"
 import { useContext, useEffect, useState } from "react"
 import NavBar from "../Components/NavBar"
 import axios from "axios"
-import Produto from "../components/Produto"
+import Produto from "../Components/Produto"
 import { useNavigate } from "react-router"
-import { UserContext } from "../components/UserContext"
+import { UserContext } from "../Components/UserContext"
 
 export default function SuaLoja(){
 
@@ -33,8 +32,7 @@ export default function SuaLoja(){
                     <button onClick={()=> navigate("/novo-jogo")}>+</button>
                 </Topo>
                 <GamesContainer>
-                    {/* {games.map((game)=><Produto/>)} */}
-                    <Produto id={"64b09199958f9440d29d15ff"}/>
+                    {games.map((game)=><Produto key={game._id} game={game}/>)}
                 </GamesContainer>
             </Corpo>
         </Loja>

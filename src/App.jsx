@@ -6,10 +6,10 @@ import ItemsContextProvider from "./Contexts/ItemsContext";
 import HomePage from "./Pages/HomePage";
 import GamePage from "./Pages/GamePage";
 import Cart from "./Pages/Cart";
-import SuaLoja from "./pages/SuaLoja"
-import NovoJogo from "./pages/NovoJogo"
-import { UserContextProvider } from "./components/UserContext"
-import Editar from "./pages/Editar"
+import SuaLoja from "./Pages/SuaLoja"
+import NovoJogo from "./Pages/NovoJogo"
+import { UserContextProvider } from "./Components/UserContext"
+import Editar from "./Pages/Editar"
 
 
 
