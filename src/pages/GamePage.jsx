@@ -4,24 +4,24 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import { useParams } from "react-router-dom"
 
-export default function GamePage(){
+export default function GamePage() {
 
-    const {id} = useParams()
+    const { id } = useParams()
     const [game, setGame] = useState(null)
 
-    useEffect(()=>{
+    useEffect(() => {
         axios.get(`${import.meta.env.VITE_API_URL}/game/${id}`)
-            .then((response)=>{
+            .then((response) => {
                 setGame(response.data)
             })
-            .catch((error)=>console.log(error.message))
+            .catch((error) => console.log(error.message))
     }, [])
 
 
-    if(!game){
-        return(
+    if (!game) {
+        return (
             <Page>
-                <NavBar/>
+                <NavBar />
                 <Container>
                     Carregando....
                 </Container>
@@ -29,9 +29,9 @@ export default function GamePage(){
         )
     }
 
-    return(
+    return (
         <Page>
-            <NavBar/>
+            <NavBar />
             <Container>
                 <Banner src={game.capa}></Banner>
                 <Infos>

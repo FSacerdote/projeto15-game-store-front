@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { Link } from "react-router-dom"
 import { useState } from "react";
-import NavBar from "../Components/NavBar.jsx";
+import NavBar from "../components/NavBar.jsx";
 import axios from "axios";
 
 export default function SignInPage() {
@@ -13,33 +13,33 @@ export default function SignInPage() {
 
     function submitForm(e) {
         e.preventDefault();
-    
+
         axios.post(`${process.env.VITE_URL}/login`, form)
-        .then(res => {
-            console.log(res.data)
-        })
-        .catch((err) => alert(err.response.data))
+            .then(res => {
+                console.log(res.data)
+            })
+            .catch((err) => alert(err.response.data))
     }
-    
+
     return (
         <>
             <NavBar />
             <Container>
                 <form onSubmit={submitForm}>
-                    <input 
-                        required 
-                        placeholder="E-mail" 
-                        type="email" 
+                    <input
+                        required
+                        placeholder="E-mail"
+                        type="email"
                         autoComplete="username"
                         name="email"
                         onChange={handleForm}
                     />
-                    <input 
-                        required 
+                    <input
+                        required
                         minLength={3}
-                        placeholder="Senha" 
-                        type="password" 
-                        autoComplete="new-password" 
+                        placeholder="Senha"
+                        type="password"
+                        autoComplete="new-password"
                         name="password"
                         onChange={handleForm}
                     />

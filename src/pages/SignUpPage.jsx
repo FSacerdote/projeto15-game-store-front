@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import styled from "styled-components"
 import { Link } from "react-router-dom"
-import NavBar from "../Components/NavBar.jsx";
+import NavBar from "../components/NavBar.jsx";
 
 export default function SignUpPage() {
     const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' });
@@ -13,62 +13,62 @@ export default function SignUpPage() {
 
     function submitForm(e) {
         e.preventDefault();
-    
-        if(form.password !== form.confirmPassword)
+
+        if (form.password !== form.confirmPassword)
             return alert("As senhas não coincidem!");
 
         delete form.confirmPassword;
         axios.post(`${process.env.VITE_URL}/cadastro`, form)
-        .then(res => console.log(res.response.data))
-        .catch(err => console.log(err))
+            .then(res => console.log(res.response.data))
+            .catch(err => console.log(err))
     }
-    
+
     return (
         <>
             <NavBar />
             <Container>
                 <form onSubmit={submitForm}>
-                    <input 
-                        required 
-                        placeholder="Nome" 
+                    <input
+                        required
+                        placeholder="Nome"
                         type="name"
                         name="name"
                         onChange={handleForm}
                     />
-                    <input 
-                        required 
-                        placeholder="E-mail" 
-                        type="email" 
+                    <input
+                        required
+                        placeholder="E-mail"
+                        type="email"
                         autoComplete="username"
                         name="email"
                         onChange={handleForm}
                     />
-                    <input 
-                        required 
+                    <input
+                        required
                         minLength={3}
-                        placeholder="Senha" 
-                        type="password" 
-                        autoComplete="new-password" 
+                        placeholder="Senha"
+                        type="password"
+                        autoComplete="new-password"
                         name="password"
                         onChange={handleForm}
                     />
-                    <input 
-                        required 
-                        placeholder="Confirme a senha" 
-                        type="password" 
-                        autoComplete="new-password" 
+                    <input
+                        required
+                        placeholder="Confirme a senha"
+                        type="password"
+                        autoComplete="new-password"
                         name="confirmPassword"
                         onChange={handleForm}
                     />
                     <FileLabel htmlFor="fileUpload">
                         Selecione uma imagem
-                        <FileInput 
+                        <FileInput
                             id="fileUpload"
-                            required 
+                            required
                             type="file"
                             name="image"
-                            onChange={handleImageUpload}
-                            accept="image/*" 
+                            // onChange={handleImageUpload}
+                            accept="image/*"
                         />
                     </FileLabel>
                     <button type="submit">Cadastrar</button>
