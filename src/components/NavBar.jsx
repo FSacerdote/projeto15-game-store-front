@@ -27,8 +27,8 @@ const NavBar = () => {
             <Link to="/sualoja">Sua Loja</Link>
             <Link>Categorias</Link>
             <input type="text" />
-            <Link>Login/Cadastro</Link>
             <Link id="cart" to="/carrinho">Carrinho</Link>
+            <Link>Login/Cadastro</Link>
         </Container>
     )
 }
@@ -40,11 +40,11 @@ const Container = styled.nav`
 
     margin: 0 auto;
     padding: 10px 30px;
-    width: 85%;
-    height: 40px;
+    width: 90%;
+    height: 50px;
 
     position: fixed;
-    top: 20px;
+    top: 10px;
     left: 0;
     right: 0;
 

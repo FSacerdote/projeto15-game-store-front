@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import ResetCss from "./style/reset";
 import GlobalStyle from "./style/globalStyle";
-import ItemsContextProvider from "./Contexts/ItemsContext";
+import ItemsContextProvider from "./context/ItemsContext";
 import HomePage from "./pages/HomePage";
 import GamePage from "./pages/GamePage";
 import Cart from "./pages/Cart";
