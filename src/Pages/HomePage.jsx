@@ -24,7 +24,7 @@ export default function HomePage() {
                     {games.length !== 0?<h1>Jogos Disponíveis</h1>:<h1>Nenhum jogo disponível no momento</h1>}
                 </Topo>
                 <GamesContainer>
-                    {games.map((game) => <Game />)}
+                    {games.map((game) => <Game key={game._id} game={game}/>)}
                 </GamesContainer>
             </Corpo>
         </Home>

@@ -1,21 +1,31 @@
 import { styled } from "styled-components"
 import { useNavigate} from "react-router-dom"
+import axios from "axios"
 
-export default function Produto({id}){
+export default function Produto({game}){
 
     const navigate = useNavigate()
+
+    function deleteGame(){
+        if(!confirm("Tem certeza que deseja deletar este produto?")) return
+        axios.delete(`${import.meta.env.VITE_API_URL}/delete/${game._id}`)
+            .then(()=>{
+                navigate("sualoja")
+            })
+            .catch((error)=>console.log(error.response))
+    }
 
     return(
         <GameContainer>
             <Banner>
-                <img src="https://files.tecnoblog.net/wp-content/uploads/2019/04/days-gone.jpg" alt="" />
-                <Titulo>Days Gone</Titulo>
+                <img src={game.capa} alt="" />
+                <Titulo>{game.titulo}</Titulo>
             </Banner>
             <Footer>
                 <Editar>
-                    <span onClick={()=>navigate(`/editar/${id}`)}>Editar</span>
+                    <span onClick={()=>navigate(`/editar/${game._id}`)}>Editar</span>
                 </Editar>
-                <Deletar>
+                <Deletar onClick={deleteGame}>
                     <span>X</span>
                 </Deletar>
             </Footer>
