@@ -1,15 +1,14 @@
 import { useState, useContext } from 'react';
 import { styled } from 'styled-components';
 
-import NavBar from '../Components/NavBar';
-import { ItemsContext } from '../Contexts/ItemsContext';
+import NavBar from '../components/NavBar';
+import { ItemsContext } from '../context/ItemsContext';
 import { Link } from 'react-router-dom';
 import finishOrder from '../services/finishOrder';
 
 const Item = ({ item: { itemId, itemName, itemPrice, itemImgUrl, itemQtde },
     setSelectedItems }) => {
     const [thisItemQtde, setThisItemQtde] = useState(itemQtde);
-
     const handleClick = (action) => {
         if (thisItemQtde === 0 && !action) return;
 
@@ -27,7 +26,7 @@ const Item = ({ item: { itemId, itemName, itemPrice, itemImgUrl, itemQtde },
         <img src={itemImgUrl} alt={itemName} />
         <div>
             <h2>{itemName}</h2>
-            <h2>R$ {itemPrice.toFixed(2)}</h2>
+            <h2>R$ {Number(itemPrice).toFixed(2)}</h2>
         </div>
         <div style={{
             display: "flex",
@@ -53,7 +52,7 @@ const Cart = () => {
         ev.preventDefault();
 
         finishOrder(formData, selectedItems);
-    }
+    };
 
     return (
         <>
@@ -61,7 +60,18 @@ const Cart = () => {
             <Container>
                 {
                     selectedItems.items.length > 0 ?
-                        selectedItems.items.map(item => <Item key={item.itemId} item={item} setSelectedItems={setSelectedItems} />)
+                        <div style={{
+                            display: "flex",
+                            justifyContent: "flex-start",
+                            gap: "60px",
+                            overflowX: "scroll",
+                            width: "80%",
+                            padding: "30px"
+                        }}>
+                            {selectedItems.items.map(item =>
+                                <Item key={item.itemId} item={item} setSelectedItems={setSelectedItems} />)}
+
+                        </div>
                         : <h1>Seu carrinho está vazio... <br /><Link to="/">Confira os jogos disponíveis no catálogo!</Link></h1>
                 }
                 <form onSubmit={ev => handleSubmit(ev)} onChange={ev => setFormData(prev => ({
@@ -91,7 +101,7 @@ const Cart = () => {
 
 const Container = styled.div`
     width: 100%;
-    height: 100vw;
+    height: 100%;
     padding-top: 120px;
     background-color: #375971ff;
 
@@ -100,10 +110,12 @@ const Container = styled.div`
     align-items: center;
     justify-content: flex-start;
     gap: 40px;
+    overflow-x: hidden;
 
     img {
-        width: 250px;
+        max-width: 250px;
         height: auto;
+        background-color: transparent;
 
         border-radius: 40px;
         border: 0.5px solid #ff61c6ff;
@@ -195,6 +207,10 @@ const Container = styled.div`
             width: 20px;
             height: 20px;
         }
+
+        h3 {
+            margin-top: 5px;
+        }
     }
 `;
 
@@ -202,13 +218,14 @@ const ItemContainer = styled.div`
     display: flex;
     justify-content: space-around;
     align-items: center;
-    gap: 45px;
+    gap: 20px;
 
     div {
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 15px;
+
 
         h2 {
             &:nth-child(1) {
