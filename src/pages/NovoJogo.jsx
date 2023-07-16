@@ -3,7 +3,7 @@ import NavBar from "../components/NavBar"
 import { useContext, useEffect, useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
-import { UserContext } from "../components/UserContext"
+import { UserContext } from "../Components/UserContext"
 
 export default function NovoJogo() {
 

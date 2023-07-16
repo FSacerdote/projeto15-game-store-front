@@ -2,14 +2,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import ResetCss from "./style/reset";
 import GlobalStyle from "./style/globalStyle";
-import ItemsContextProvider from "./context/ItemsContext";
+import ItemsContextProvider from "./Contexts/ItemsContext";
 import HomePage from "./pages/HomePage";
 import GamePage from "./pages/GamePage";
 import Cart from "./pages/Cart";
-import SuaLoja from "./pages/SuaLoja";
-import NovoJogo from "./pages/NovoJogo";
-import { UserContextProvider } from "./components/UserContext";
-import Editar from "./pages/Editar";
+import SuaLoja from "./pages/SuaLoja"
+import NovoJogo from "./pages/NovoJogo"
+import { UserContextProvider } from "./components/UserContext"
+import Editar from "./pages/Editar"
 
 
 

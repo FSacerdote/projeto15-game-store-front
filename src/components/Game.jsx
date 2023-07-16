@@ -1,19 +1,20 @@
 import { styled } from "styled-components"
 import { useNavigate} from "react-router-dom"
 
-export default function Game(){
+export default function Game(props){
 
     const navigate = useNavigate()
+    const {game} = props
 
     return(
         <GameContainer>
-            <Banner onClick={()=>navigate("/game/10")}>
-                <img src="https://files.tecnoblog.net/wp-content/uploads/2019/04/days-gone.jpg" alt="" />
-                <Titulo>Days Gone</Titulo>
+            <Banner onClick={()=>navigate(`/game/${game._id}`)}>
+                <img src={game.capa} alt="" />
+                <Titulo>{game.titulo}</Titulo>
             </Banner>
             <Footer>
                 <Carrinho>
-                    <span>R$ 64,99</span>
+                    <span>R$ {game.valor}</span>
                 </Carrinho>
             </Footer>
         </GameContainer>
