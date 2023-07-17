@@ -6,14 +6,13 @@ import axios from "axios"
 import Produto from "../components/Produto"
 import { useNavigate } from "react-router"
 import { UserContext } from "../context/UserAuthContext"
+import { Link } from "react-router-dom"
 
 export default function SuaLoja() {
 
     const [games, setGames] = useState([])
     const navigate = useNavigate()
-    const { userData: user } = useContext(UserContext)
-    const {token} = user
-
+    const { userData: { token } } = useContext(UserContext)
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
@@ -21,15 +20,17 @@ export default function SuaLoja() {
     }
 
     useEffect(() => {
-        if (token.length === 0) {
-            navigate("/login")
+        if (!token.length) {
+            return navigate("/login");
         }
+
         axios.get(`${import.meta.env.VITE_API_URL}/meusjogos`, config)
             .then((resposta) => {
-                console.log(resposta)
-                setGames(resposta.data)
+                if (resposta.data.length > 0) {
+                    setGames(resposta.data);
+                }
             })
-            .catch((erro) => console.log(erro.message))
+            .catch((erro) => console.log(erro.message));
     }, [])
 
     return (
@@ -41,7 +42,12 @@ export default function SuaLoja() {
                     <button onClick={() => navigate("/novo-jogo")}>+</button>
                 </Topo>
                 <GamesContainer>
-                    {games?.map((game) => <Produto key={game._id} game={game} />)}
+                    {games.length > 0
+                        ? games.map((game) => <Produto key={game._id} game={game} />)
+                        : <Link>
+                            "Nenhum jogo por aqui... Adicione o seu primeiro jogo na loja."
+                        </Link>
+                    }
                 </GamesContainer>
             </Corpo>
         </Loja>
