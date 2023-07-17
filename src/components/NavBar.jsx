@@ -35,7 +35,7 @@ const NavBar = () => {
                 <img src={storeIcon} alt="icon" />Sua Loja</Link>
             <Link to="/">
                 <img src={homeIcon} alt="icon" />Home</Link>
-            <input type="text" value={search}
+            <input type="text" value={search} placeholder='Buscar....'
                 onChange={(event)=> setSearch(event.target.value)} />
             <Link id="cart" to="/carrinho">
                 <img src={cartIcon} alt="icon" />Carrinho</Link>

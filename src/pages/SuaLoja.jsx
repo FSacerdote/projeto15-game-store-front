@@ -7,6 +7,7 @@ import Produto from "../components/Produto"
 import { useNavigate } from "react-router"
 import { UserContext } from "../context/UserAuthContext"
 import { Link } from "react-router-dom"
+import { SearchContext } from "../context/SearchContext"
 
 export default function SuaLoja() {
 
@@ -19,11 +20,13 @@ export default function SuaLoja() {
         }
     }
 
+    const {search, setSearch} = useContext(SearchContext)
+
     useEffect(() => {
         if (!token.length) {
             return navigate("/login");
         }
-
+        setSearch("")
         axios.get(`${import.meta.env.VITE_API_URL}/meusjogos`, config)
             .then((resposta) => {
                 if (resposta.data.length > 0) {
@@ -32,6 +35,8 @@ export default function SuaLoja() {
             })
             .catch((erro) => console.log(erro.message));
     }, [])
+
+    const filtro = games.filter((game)=> game.titulo.toLowerCase().includes(search.toLowerCase()))
 
     return (
         <Loja>
@@ -43,7 +48,7 @@ export default function SuaLoja() {
                 </Topo>
                 <GamesContainer>
                     {games.length > 0
-                        ? games.map((game) => <Produto key={game._id} game={game} />)
+                        ? filtro.map((game) => <Produto key={game._id} game={game} />)
                         : <Link>
                             "Nenhum jogo por aqui... Adicione o seu primeiro jogo na loja."
                         </Link>
