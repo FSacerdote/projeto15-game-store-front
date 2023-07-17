@@ -1,9 +1,10 @@
 import { useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import NavBar from '../components/NavBar';
 import { ItemsContext } from '../context/ItemsContext';
-import { Link } from 'react-router-dom';
+import { UserContext } from '../context/UserAuthContext';
 import finishOrder from '../services/finishOrder';
 import rightArrow from '../assets/caret-forward-outline.svg';
 
@@ -45,22 +46,36 @@ const Item = ({ item: { itemId, itemName, itemPrice, itemImgUrl, itemQtde },
 
 const Cart = () => {
     const { selectedItems, setSelectedItems } = useContext(ItemsContext);
+    const { userData } = useContext(UserContext);
     const [formData, setFormData] = useState({
-        nome: "",
+        comprador: "",
         cep: "",
+        email: "",
         frete: "gratis",
     });
+    const [requestStatus, setRequestStatus] = useState(false);
 
     const handleSubmit = (ev) => {
         ev.preventDefault();
-        if (true) {
-            finishOrder(formData, selectedItems);
-        } else { return; }
+        const itemsToSend = selectedItems.items.filter(item => item.itemQtde > 0);
+        const reqBody = { ...formData };
+        const token = userData.token;
+        if (userData.token.length > 0) {
+            reqBody.comprador = userData.userInfo.userId;
+        }
+
+        const request = finishOrder(reqBody, itemsToSend, token);
+
+        setRequestStatus(true);
+        setTimeout(() => {
+            setRequestStatus(false);
+        }, 3000);
     };
 
     return (
         <>
             <NavBar />
+            {/* <ReqStatus></ReqStatus> */}
             <Container>
                 {
                     !!selectedItems.items.find(item => item.itemQtde > 0) ?
@@ -73,8 +88,8 @@ const Cart = () => {
                             height: "300px",
                             overflowX: "hidden",
                         }}>
-                            {selectedItems.items.map(item => item.itemQtde > 0 ?
-                                <Item key={item.itemId} item={item} setSelectedItems={setSelectedItems} /> : <></>)}
+                            {selectedItems.items.map(item => item.itemQtde > 0 &&
+                                <Item key={item.itemId} item={item} setSelectedItems={setSelectedItems} />)}
 
                         </div>
                         : <h1>Seu carrinho está vazio... <br /><Link style={{
@@ -98,8 +113,8 @@ const Cart = () => {
                 <form onSubmit={ev => handleSubmit(ev)} onChange={ev => setFormData(prev => ({
                     ...prev, [ev.target.name]: ev.target.value
                 }))}>
-                    <label htmlFor="nome">Nome completo:</label>
-                    <input type="text" id="nome" name="nome" />
+                    <label htmlFor="comprador">Nome completo:</label>
+                    <input type="text" id="comprador" name="comprador" />
 
                     <label htmlFor="cep">CEP:</label>
                     <input type="text" id="cep" name="cep" />
