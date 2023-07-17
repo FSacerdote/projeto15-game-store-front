@@ -1,12 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import homeIcon from '../assets/home-outline.svg';
 import authIcon from '../assets/person-add-outline.svg';
 import cartIcon from '../assets/cart-outline.svg';
 import storeIcon from '../assets/storefront-outline.svg';
+import { SearchContext } from '../context/SearchContext';
 
 const NavBar = () => {
+
+    const { search, setSearch} = useContext(SearchContext)
     const [scrollDiff, setScrollDiff] = useState({
         prev: window.scrollY,
         curr: window.scrollY,
@@ -32,8 +35,8 @@ const NavBar = () => {
                 <img src={storeIcon} alt="icon" />Sua Loja</Link>
             <Link to="/">
                 <img src={homeIcon} alt="icon" />Home</Link>
-            <input type="text"
-                onChange={ev => findRelatedItems(ev)} />
+            <input type="text" value={search}
+                onChange={(event)=> setSearch(event.target.value)} />
             <Link id="cart" to="/carrinho">
                 <img src={cartIcon} alt="icon" />Carrinho</Link>
             <Link to="/login">
