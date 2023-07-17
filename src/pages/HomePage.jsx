@@ -1,12 +1,14 @@
 import { styled } from "styled-components"
 import Game from "../components/Game"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import NavBar from "../components/NavBar"
 import axios from "axios"
+import { SearchContext } from "../context/SearchContext"
 
 export default function HomePage() {
 
     const [games, setGames] = useState([])
+    const {search} = useContext(SearchContext)
 
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_API_URL}/games`)
@@ -16,6 +18,8 @@ export default function HomePage() {
             .catch((erro) => console.log(erro.message))
     }, [])
 
+    const filtro = games.filter((game)=> game.titulo.toLowerCase().includes(search.toLowerCase()))
+
     return (
         <Home>
             <NavBar />
@@ -24,7 +28,7 @@ export default function HomePage() {
                     {games.length !== 0 ? <h1>Jogos Disponíveis</h1> : <h1>Nenhum jogo disponível no momento</h1>}
                 </Topo>
                 <GamesContainer>
-                    {games.map((game) => <Game key={game._id} game={game} />)}
+                    {filtro.map((game) => <Game key={game._id} game={game} />)}
                 </GamesContainer>
             </Corpo>
         </Home>
