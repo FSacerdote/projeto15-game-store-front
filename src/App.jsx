@@ -12,7 +12,6 @@ import UserAuthProvider from "./context/UserAuthContext"
 import Editar from "./pages/Editar"
 import SignUpPage from "./pages/SignUpPage";
 import SignInPage from "./pages/SignInPage";
-console.log(UserAuthProvider);
 
 function App() {
   return (

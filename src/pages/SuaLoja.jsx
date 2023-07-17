@@ -27,8 +27,9 @@ export default function SuaLoja() {
 
         axios.get(`${import.meta.env.VITE_API_URL}/meusjogos`, config)
             .then((resposta) => {
-                if (resposta.data.games.length > 0) {
-                    setGames(resposta.data.games);
+                console.log(resposta);
+                if (resposta.data.length > 0) {
+                    setGames(resposta.data);
                 }
             })
             .catch((erro) => console.log(erro.message));

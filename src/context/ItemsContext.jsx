@@ -31,7 +31,7 @@ const ItemsContextProvider = ({ children }) => {
               itemQtde: 1,
             }))
           , total: 10
-        }); console.log(res.data);
+        });
       })
       .catch(err => console.log(err.response));
   }, []);
