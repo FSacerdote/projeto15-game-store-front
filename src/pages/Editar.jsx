@@ -30,7 +30,7 @@ export default function Editar() {
 
     function editGame(event) {
         event.preventDefault()
-        const gameEditado = { titulo, preco, descricao, capa, genero }
+        const gameEditado = { titulo, valor: Number(preco.replace(",",".")).toFixed(2), descricao, capa, genero }
         axios.put(`${import.meta.env.VITE_API_URL}/editar/${id}`, gameEditado)
             .then(() => navigate("/sualoja"))
             .catch((erro) => console.log(erro.message))

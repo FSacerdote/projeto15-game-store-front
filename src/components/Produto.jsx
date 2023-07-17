@@ -1,16 +1,24 @@
 import { styled } from "styled-components"
 import { useNavigate} from "react-router-dom"
+import { UserContext } from "../context/UserAuthContext"
 import axios from "axios"
+import { useContext } from "react"
 
 export default function Produto({game}){
 
     const navigate = useNavigate()
+    const { userData: user } = useContext(UserContext)
+    const config = {
+        headers: {
+            Authorization: `Bearer ${user.token}`
+        }
+    }
 
     function deleteGame(){
         if(!confirm("Tem certeza que deseja deletar este produto?")) return
-        axios.delete(`${import.meta.env.VITE_API_URL}/delete/${game._id}`)
+        axios.delete(`${import.meta.env.VITE_API_URL}/delete/${game._id}`, config)
             .then(()=>{
-                navigate("sualoja")
+                return navigate("/")
             })
             .catch((error)=>console.log(error.response))
     }
