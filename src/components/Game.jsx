@@ -5,10 +5,11 @@ import { styled } from "styled-components";
 import { ItemsContext } from "../context/ItemsContext";
 
 export default function Game(props) {
-    const { setSelectedItems } = useContext(ItemsContext);
-    const [addedToCart, setAddedToCart] = useState(false);
-    const navigate = useNavigate();
+    const { selectedItems, setSelectedItems } = useContext(ItemsContext);
     const { game } = props;
+    const [addedToCart, setAddedToCart] = useState(!!selectedItems.items.find(item =>
+        item.itemId == game._id));
+    const navigate = useNavigate();
 
     const addToCart = () => {
         setAddedToCart(prev => !prev);
@@ -39,7 +40,13 @@ export default function Game(props) {
                 <Titulo>{game.titulo}</Titulo>
             </Banner>
             <Footer>
-                <Carrinho onClick={addToCart} action={addedToCart ? "Remover" : "Adicionar"}>
+                <Carrinho
+                    style={{
+                        backgroundColor: `${addedToCart
+                            ? "#42f56f" : ""}`
+                    }}
+                    onClick={addToCart}
+                    action={addedToCart ? "Remover" : "Adicionar"}>
                     <h5>{addedToCart ? "Remover" : "Adicionar"}</h5>
                     <span>{addedToCart ? "No carrinho" : "R$" + game.valor}</span>
                 </Carrinho>

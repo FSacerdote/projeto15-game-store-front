@@ -1,7 +1,4 @@
 import { createContext, useEffect, useState } from 'react';
-import axios from 'axios';
-
-import generateName from '../services/generateRandomName';
 
 export const ItemsContext = createContext(null);
 // items: [ Array of objects (items selected by the user), with the following structure:
