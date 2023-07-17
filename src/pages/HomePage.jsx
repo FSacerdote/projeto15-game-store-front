@@ -58,4 +58,5 @@ const Topo = styled.div`
 const GamesContainer = styled.div`
     display: flex;
     gap: 20px;
+    cursor: pointer;
 `

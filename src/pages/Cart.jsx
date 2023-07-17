@@ -5,6 +5,7 @@ import NavBar from '../components/NavBar';
 import { ItemsContext } from '../context/ItemsContext';
 import { Link } from 'react-router-dom';
 import finishOrder from '../services/finishOrder';
+import rightArrow from '../assets/caret-forward-outline.svg';
 
 const Item = ({ item: { itemId, itemName, itemPrice, itemImgUrl, itemQtde },
     setSelectedItems }) => {
@@ -50,8 +51,9 @@ const Cart = () => {
 
     const handleSubmit = (ev) => {
         ev.preventDefault();
-
-        finishOrder(formData, selectedItems);
+        if (true) {
+            finishOrder(formData, selectedItems);
+        } else { return; }
     };
 
     return (
@@ -62,17 +64,34 @@ const Cart = () => {
                     selectedItems.items.length > 0 ?
                         <div style={{
                             display: "flex",
+                            flexDirection: "column",
                             justifyContent: "flex-start",
-                            gap: "60px",
-                            overflowX: "scroll",
-                            width: "80%",
-                            padding: "30px"
+                            gap: "40px",
+                            width: "50%",
+                            height: "300px",
+                            overflowX: "hidden",
                         }}>
                             {selectedItems.items.map(item =>
                                 <Item key={item.itemId} item={item} setSelectedItems={setSelectedItems} />)}
 
                         </div>
-                        : <h1>Seu carrinho está vazio... <br /><Link to="/">Confira os jogos disponíveis no catálogo!</Link></h1>
+                        : <h1>Seu carrinho está vazio... <br /><Link style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                            to="/">Confira os jogos disponíveis no catálogo!
+                            <img
+                                src={rightArrow}
+                                alt="right arrow"
+                                style={{
+                                    width: "40px",
+                                    height: "40px",
+                                    border: "none",
+                                    boxShadow: "none"
+                                }}
+                            />
+                        </Link></h1>
                 }
                 <form onSubmit={ev => handleSubmit(ev)} onChange={ev => setFormData(prev => ({
                     ...prev, [ev.target.name]: ev.target.value
@@ -94,27 +113,27 @@ const Cart = () => {
                     <button>Finalizar pedido</button>
                     <h3 name="total">Total: {selectedItems.total}</h3>
                 </form>
-            </Container>
+            </Container >
         </>
     )
 }
 
 const Container = styled.div`
-    width: 100%;
+    width: 90%;
     height: 100%;
-    padding-top: 120px;
-    background-color: #375971ff;
+    padding: 150px 30px 50px;
+    margin: auto;
 
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     gap: 40px;
     overflow-x: hidden;
 
     img {
         max-width: 250px;
         height: auto;
+        min-height: 50px;
         background-color: transparent;
 
         border-radius: 40px;
@@ -179,7 +198,7 @@ const Container = styled.div`
         align-items: center;
         gap: 5px;
 
-        width: 70%;
+        width: 50%;
         padding: 20px 0px;
 
         color: #fff;
@@ -216,7 +235,7 @@ const Container = styled.div`
 
 const ItemContainer = styled.div`
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     gap: 20px;
 
