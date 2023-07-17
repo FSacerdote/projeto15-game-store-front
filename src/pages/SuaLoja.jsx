@@ -13,11 +13,17 @@ export default function SuaLoja() {
     const navigate = useNavigate()
     const { userData: token } = useContext(UserContext)
 
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+
     useEffect(() => {
         if (!token) {
             navigate("/login")
         }
-        axios.get(`${import.meta.env.VITE_API_URL}/games`)
+        axios.get(`${import.meta.env.VITE_API_URL}/meusjogos`, config)
             .then((resposta) => {
                 setGames(resposta.data.games)
             })
