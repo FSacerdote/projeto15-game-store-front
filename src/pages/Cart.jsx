@@ -19,7 +19,9 @@ const Item = ({ item: { itemId, itemName, itemPrice, itemImgUrl, itemQtde },
                 .map(item => item.itemId === itemId
                     ? { ...item, itemQtde: item.itemQtde + (action ? 1 : -1) }
                     : { ...item })
-            ], total: prev.total + (action ? 1 : -1) * itemPrice,
+            ], total: prev.total + (action ? 1 : -1) * itemPrice >= 0
+                ? prev.total + (action ? 1 : -1) * itemPrice
+                : 0,
         }))
     };
 
@@ -61,7 +63,7 @@ const Cart = () => {
             <NavBar />
             <Container>
                 {
-                    selectedItems.items.length > 0 ?
+                    !!selectedItems.items.find(item => item.itemQtde > 0) ?
                         <div style={{
                             display: "flex",
                             flexDirection: "column",
@@ -71,8 +73,8 @@ const Cart = () => {
                             height: "300px",
                             overflowX: "hidden",
                         }}>
-                            {selectedItems.items.map(item =>
-                                <Item key={item.itemId} item={item} setSelectedItems={setSelectedItems} />)}
+                            {selectedItems.items.map(item => item.itemQtde > 0 ?
+                                <Item key={item.itemId} item={item} setSelectedItems={setSelectedItems} /> : <></>)}
 
                         </div>
                         : <h1>Seu carrinho está vazio... <br /><Link style={{
