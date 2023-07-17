@@ -44,7 +44,7 @@ export default function NovoJogo() {
                 <input type="text" placeholder="Titulo" value={titulo} onChange={(event) => setTitulo(event.target.value)} required />
                 <input type="text" placeholder="Preço" value={preco} onChange={(event) => setPreco(event.target.value)} required />
                 <input type="text" placeholder="Descrição" value={descricao} onChange={(event) => setDescricao(event.target.value)} required />
-                <input type="text" placeholder="URl da imagem de capa" value={capa} onChange={(event) => setCapa(event.target.value)} required />
+                <input type="text" placeholder="URL da imagem de capa" value={capa} onChange={(event) => setCapa(event.target.value)} required />
                 <input type="text" placeholder="Gênero" value={genero} onChange={(event) => setGenero(event.target.value)} required />
                 <button type="submit">Adicionar jogo</button>
             </Form>

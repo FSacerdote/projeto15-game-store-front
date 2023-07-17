@@ -1,13 +1,36 @@
-import { styled } from "styled-components"
-import { useNavigate } from "react-router-dom"
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { styled } from "styled-components";
+
+import { ItemsContext } from "../context/ItemsContext";
 
 export default function Game(props) {
-
+    const { setSelectedItems } = useContext(ItemsContext);
+    const [addedToCart, setAddedToCart] = useState(false);
     const navigate = useNavigate();
     const { game } = props;
 
-    const addToCart = game => {
+    const addToCart = () => {
+        setAddedToCart(prev => !prev);
 
+        const newGameObj = {
+            itemId: game._id,
+            itemName: game.titulo,
+            itemImgUrl: game.capa,
+            itemPrice: game.valor,
+            itemQtde: 1,
+        }
+
+        setSelectedItems(prev => !addedToCart
+            ? {
+                items: [...prev.items, newGameObj],
+                total: prev.total + Number(game.valor.toString().replace(",", "."))
+            }
+            : {
+                items: [...prev.items].filter(item => item.itemId !== game._id),
+                total: prev.total - Number(game.valor.toString().replace(",", "."))
+            }
+        )
     }
     return (
         <GameContainer>
@@ -16,8 +39,9 @@ export default function Game(props) {
                 <Titulo>{game.titulo}</Titulo>
             </Banner>
             <Footer>
-                <Carrinho onClick={() => addToCart(game)}>
-                    <span>R$ {game.valor}</span>
+                <Carrinho onClick={addToCart} action={addedToCart ? "Remover" : "Adicionar"}>
+                    <h5>{addedToCart ? "Remover" : "Adicionar"}</h5>
+                    <span>{addedToCart ? "No carrinho" : "R$" + game.valor}</span>
                 </Carrinho>
             </Footer>
         </GameContainer>
@@ -48,15 +72,20 @@ const Carrinho = styled.button`
     border: none;
     color: #0a0c37ff;
     font-size: 17px;
+
+    h5 {
+        display: none;
+    }
+
     &:hover{
         cursor: pointer;
         filter: brightness(0.9);
         span{
             display: none
         }
-    }
-    &:hover:before{
-        content: "Adicionar";
+        h5 {
+            display: block;
+        }
     }
 `
 
