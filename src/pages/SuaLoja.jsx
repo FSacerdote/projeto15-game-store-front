@@ -11,7 +11,8 @@ export default function SuaLoja() {
 
     const [games, setGames] = useState([])
     const navigate = useNavigate()
-    const { userData: token } = useContext(UserContext)
+    const { userData: user } = useContext(UserContext)
+    const {token} = user
 
     const config = {
         headers: {
@@ -20,12 +21,13 @@ export default function SuaLoja() {
     }
 
     useEffect(() => {
-        if (!token) {
+        if (token.length === 0) {
             navigate("/login")
         }
         axios.get(`${import.meta.env.VITE_API_URL}/meusjogos`, config)
             .then((resposta) => {
-                setGames(resposta.data.games)
+                console.log(resposta)
+                setGames(resposta.data)
             })
             .catch((erro) => console.log(erro.message))
     }, [])
@@ -39,7 +41,7 @@ export default function SuaLoja() {
                     <button onClick={() => navigate("/novo-jogo")}>+</button>
                 </Topo>
                 <GamesContainer>
-                    {games.map((game) => <Produto key={game._id} game={game} />)}
+                    {games?.map((game) => <Produto key={game._id} game={game} />)}
                 </GamesContainer>
             </Corpo>
         </Loja>
@@ -57,7 +59,7 @@ const Loja = styled.div`
 const Corpo = styled.div`
     margin-top: 70px;
     padding-top: 10px;
-    width: 1250px;
+    width: 90%;
 `
 
 const Topo = styled.div`
