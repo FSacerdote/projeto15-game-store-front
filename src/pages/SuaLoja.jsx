@@ -21,13 +21,11 @@ export default function SuaLoja() {
 
     useEffect(() => {
         if (!token.length) {
-            navigate("/login");
-            return;
+            return navigate("/login");
         }
 
         axios.get(`${import.meta.env.VITE_API_URL}/meusjogos`, config)
             .then((resposta) => {
-                console.log(resposta);
                 if (resposta.data.length > 0) {
                     setGames(resposta.data);
                 }
