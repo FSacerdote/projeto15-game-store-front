@@ -8,7 +8,7 @@ export default function Game(props) {
     const { selectedItems, setSelectedItems } = useContext(ItemsContext);
     const { game } = props;
     const [addedToCart, setAddedToCart] = useState(!!selectedItems.items.find(item =>
-        item.itemId == game._id));
+        item.itemId == game._id && item.itemQtde > 0));
     const navigate = useNavigate();
 
     const addToCart = () => {
@@ -22,14 +22,15 @@ export default function Game(props) {
             itemQtde: 1,
         }
 
+        const price = Number(game.valor.toString().replace(",", "."));
         setSelectedItems(prev => !addedToCart
             ? {
                 items: [...prev.items, newGameObj],
-                total: prev.total + Number(game.valor.toString().replace(",", "."))
+                total: prev.total + price
             }
             : {
                 items: [...prev.items].filter(item => item.itemId !== game._id),
-                total: prev.total - Number(game.valor.toString().replace(",", "."))
+                total: prev.total - price >= 0 ? prev.total - price : 0
             }
         )
     }

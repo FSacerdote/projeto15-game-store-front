@@ -1,9 +1,10 @@
 import { useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import NavBar from '../components/NavBar';
 import { ItemsContext } from '../context/ItemsContext';
-import { Link } from 'react-router-dom';
+import { UserContext } from '../context/UserAuthContext';
 import finishOrder from '../services/finishOrder';
 import rightArrow from '../assets/caret-forward-outline.svg';
 
@@ -19,7 +20,9 @@ const Item = ({ item: { itemId, itemName, itemPrice, itemImgUrl, itemQtde },
                 .map(item => item.itemId === itemId
                     ? { ...item, itemQtde: item.itemQtde + (action ? 1 : -1) }
                     : { ...item })
-            ], total: prev.total + (action ? 1 : -1) * itemPrice,
+            ], total: prev.total + (action ? 1 : -1) * itemPrice >= 0
+                ? prev.total + (action ? 1 : -1) * itemPrice
+                : 0,
         }))
     };
 
@@ -43,25 +46,63 @@ const Item = ({ item: { itemId, itemName, itemPrice, itemImgUrl, itemQtde },
 
 const Cart = () => {
     const { selectedItems, setSelectedItems } = useContext(ItemsContext);
+    const { userData } = useContext(UserContext);
     const [formData, setFormData] = useState({
-        nome: "",
+        comprador: "",
         cep: "",
+        email: "",
         frete: "gratis",
+    });
+    const [requestStatus, setRequestStatus] = useState({
+        ok: false,
+        show: false,
+        message: "",
     });
 
     const handleSubmit = (ev) => {
         ev.preventDefault();
-        if (true) {
-            finishOrder(formData, selectedItems);
-        } else { return; }
+        const itemsToSend = selectedItems.items.filter(item => item.itemQtde > 0);
+
+        const showStatus = (status, message = "") => {
+            const obj = {
+                ok: status,
+                show: true,
+            };
+            if (message.length !== "") obj.message = message;
+
+            setRequestStatus(obj);
+            setTimeout(() => {
+                setRequestStatus(prev => ({ ...prev, show: false }));
+            }, 2000);
+        };
+
+        if (itemsToSend.length == 0) { showStatus(false, "Adicione items ao seu carrinho para fazer um pedido."); return; }
+
+        const reqBody = { ...formData };
+        const token = userData.token;
+        if (userData.token.length > 0) {
+            reqBody.comprador = userData.userInfo.userId;
+        }
+
+        const reqStatus = finishOrder(reqBody, itemsToSend, token);
+        showStatus(reqStatus);
     };
 
     return (
         <>
             <NavBar />
+            <ReqStatus style={{
+                display: `${requestStatus.show ? "flex" : "none"}`,
+            }}><h1>
+                    {requestStatus.ok
+                        ? "Pedido realizado com sucesso!"
+                        : requestStatus.message !== "" ? requestStatus.message
+                            : "Ocorreu um problema ao realizar o seu pedido, tente novamente em alguns instantes..."
+                    }
+                </h1></ReqStatus>
             <Container>
                 {
-                    selectedItems.items.length > 0 ?
+                    !!selectedItems.items.find(item => item.itemQtde > 0) ?
                         <div style={{
                             display: "flex",
                             flexDirection: "column",
@@ -71,7 +112,7 @@ const Cart = () => {
                             height: "300px",
                             overflowX: "hidden",
                         }}>
-                            {selectedItems.items.map(item =>
+                            {selectedItems.items.map(item => item.itemQtde > 0 &&
                                 <Item key={item.itemId} item={item} setSelectedItems={setSelectedItems} />)}
 
                         </div>
@@ -96,11 +137,15 @@ const Cart = () => {
                 <form onSubmit={ev => handleSubmit(ev)} onChange={ev => setFormData(prev => ({
                     ...prev, [ev.target.name]: ev.target.value
                 }))}>
-                    <label htmlFor="nome">Nome completo:</label>
-                    <input type="text" id="nome" name="nome" />
+                    <label htmlFor="comprador">Nome completo:</label>
+                    <input type="text" id="comprador" name="comprador" />
 
                     <label htmlFor="cep">CEP:</label>
                     <input type="text" id="cep" name="cep" />
+
+                    <label htmlFor="email">Email:</label>
+                    <input type="email" id="email" name="email" />
+
                     <div>
                         <input type="radio" value="gratis" id="gratis" name="frete" />
                         <label htmlFor="gratis">Gratis (7 dias)</label>
@@ -272,6 +317,46 @@ const ItemContainer = styled.div`
             box-shadow: 2px 2px 1px #ff61c6ff;
             background-color: #0a0c37ff;
         }
+    }
+`;
+
+const ReqStatus = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+
+    position: fixed;
+    top: 180px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+
+    width: 800px;
+    height: 250px;
+    opacity: 0.7;
+
+    border: 0.1em solid transparent;
+    background-image: linear-gradient(#000, #000),
+    linear-gradient(120deg, #f09 0%, #0ff 50%, #9f0 100%);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    border-radius: 1.8em;
+    background-size: 200% 100%;
+    transition: background-position 0.8s ease-out;
+
+    &:hover {
+        background-position: 100% 0;
+    }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    
+    h1 {
+        color: #FFF;
     }
 `;
 
