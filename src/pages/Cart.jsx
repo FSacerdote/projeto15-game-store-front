@@ -101,6 +101,10 @@ const Cart = () => {
 
                     <label htmlFor="cep">CEP:</label>
                     <input type="text" id="cep" name="cep" />
+
+                    <label htmlFor="email">Email:</label>
+                    <input type="email" id="email" name="email" />
+
                     <div>
                         <input type="radio" value="gratis" id="gratis" name="frete" />
                         <label htmlFor="gratis">Gratis (7 dias)</label>
