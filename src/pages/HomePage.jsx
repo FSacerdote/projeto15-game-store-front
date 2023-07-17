@@ -8,12 +8,13 @@ import { SearchContext } from "../context/SearchContext"
 export default function HomePage() {
 
     const [games, setGames] = useState([])
-    const {search} = useContext(SearchContext)
+    const {search, setSearch} = useContext(SearchContext)
 
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_API_URL}/games`)
             .then((resposta) => {
                 setGames(resposta.data.games)
+                setSearch("")
             })
             .catch((erro) => console.log(erro.message))
     }, [])
