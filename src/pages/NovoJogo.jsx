@@ -14,7 +14,7 @@ export default function NovoJogo() {
     const [genero, setGenero] = useState("")
 
     const navigate = useNavigate()
-    const { userData: token } = useContext(UserContext)
+    const { userData: { token } } = useContext(UserContext)
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
