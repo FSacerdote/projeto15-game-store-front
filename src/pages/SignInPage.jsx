@@ -1,11 +1,17 @@
 import styled from "styled-components"
-import { Link } from "react-router-dom"
-import { useState } from "react";
-import NavBar from "../components/NavBar.jsx";
+import { Link, useLocation, useNavigate } from "react-router-dom"
+import { useContext, useState } from "react";
+import { UserContext } from "../context/UserAuthContext.jsx";
 import axios from "axios";
 
+import NavBar from "../components/NavBar";
+
 export default function SignInPage() {
-    const [form, setForm] = useState({ email: '', password: '' });
+    const email = useLocation().state?.email;
+    const navigate = useNavigate();
+    const { setUserData } = useContext(UserContext);
+
+    const [form, setForm] = useState({ email: email || '', password: '' });
 
     function handleForm(e) {
         setForm({ ...form, [e.target.name]: e.target.value })
@@ -14,9 +20,24 @@ export default function SignInPage() {
     function submitForm(e) {
         e.preventDefault();
 
-        axios.post(`${process.env.VITE_URL}/login`, form)
+        axios.post(`${import.meta.env.VITE_API_URL}/login`, form)
             .then(res => {
-                console.log(res.data)
+                const { token, userName, email, userId } = res.data;
+                setUserData({
+                    userInfo: {
+                        userName,
+                        email,
+                        userId,
+                    }, token
+                });
+                localStorage.setItem("game-store", JSON.stringify({
+                    userInfo: {
+                        userName,
+                        email,
+                        userId,
+                    }, token
+                }));
+                navigate("/");
             })
             .catch((err) => alert(err.response.data))
     }
@@ -32,7 +53,8 @@ export default function SignInPage() {
                         type="email"
                         autoComplete="username"
                         name="email"
-                        onChange={handleForm}
+                        onChange={(ev) => setForm(prev => ({ ...prev, email: ev.target.value }))}
+                        value={email || form.email}
                     />
                     <input
                         required
@@ -74,7 +96,7 @@ const Container = styled.div`
             outline: none;
             // height calc line-height + (vertical-padding * 2) + (vertical-border * 2)
             height: 5px;
-            width: 200px;
+            width: 300px;
             padding: 0.8em 1em;
             border: 0.1em solid transparent;
             background-image: linear-gradient(#000, #000),

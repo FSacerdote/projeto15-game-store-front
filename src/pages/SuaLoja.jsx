@@ -5,13 +5,13 @@ import NavBar from "../components/NavBar"
 import axios from "axios"
 import Produto from "../components/Produto"
 import { useNavigate } from "react-router"
-import { UserContext } from "../components/UserContext"
+import { UserContext } from "../context/UserAuthContext"
 
 export default function SuaLoja() {
 
     const [games, setGames] = useState([])
     const navigate = useNavigate()
-    const { token } = useContext(UserContext)
+    const { userData: token } = useContext(UserContext)
 
     useEffect(() => {
         if (!token) {

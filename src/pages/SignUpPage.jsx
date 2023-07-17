@@ -1,11 +1,13 @@
-import axios from "axios";
 import { useState } from "react";
-import styled from "styled-components"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import axios from "axios";
+import styled from "styled-components";
+
 import NavBar from "../components/NavBar.jsx";
 
 export default function SignUpPage() {
     const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' });
+    const navigate = useNavigate();
 
     function handleForm(e) {
         setForm({ ...form, [e.target.name]: e.target.value })
@@ -17,10 +19,23 @@ export default function SignUpPage() {
         if (form.password !== form.confirmPassword)
             return alert("As senhas não coincidem!");
 
-        delete form.confirmPassword;
-        axios.post(`${process.env.VITE_URL}/cadastro`, form)
-            .then(res => console.log(res.response.data))
-            .catch(err => console.log(err))
+        const copyToSend = { ...form };
+        delete copyToSend.confirmPassword;
+        axios.post(`${import.meta.env.VITE_API_URL}/cadastro`, copyToSend)
+            .then(res => {
+                console.log(res.data);
+                navigate("/login", {
+                    state: { email: form.email }
+                });
+            })
+            .catch(err => {
+
+                if (err.response.status < 500) {
+                    alert(err.response.data);
+                } else {
+                    alert("Ocorreu um erro no seu cadastro, tente novamente em alguns instantes.");
+                }
+            })
     }
 
     return (
@@ -60,7 +75,7 @@ export default function SignUpPage() {
                         name="confirmPassword"
                         onChange={handleForm}
                     />
-                    <FileLabel htmlFor="fileUpload">
+                    {/* <FileLabel htmlFor="fileUpload">
                         Selecione uma imagem
                         <FileInput
                             id="fileUpload"
@@ -70,7 +85,7 @@ export default function SignUpPage() {
                             // onChange={handleImageUpload}
                             accept="image/*"
                         />
-                    </FileLabel>
+                    </FileLabel> */}
                     <button type="submit">Cadastrar</button>
                 </form>
 
