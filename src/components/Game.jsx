@@ -1,19 +1,22 @@
 import { styled } from "styled-components"
-import { useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
-export default function Game(props){
+export default function Game(props) {
 
-    const navigate = useNavigate()
-    const {game} = props
+    const navigate = useNavigate();
+    const { game } = props;
 
-    return(
+    const addToCart = game => {
+
+    }
+    return (
         <GameContainer>
-            <Banner onClick={()=>navigate(`/game/${game._id}`)}>
+            <Banner onClick={() => navigate(`/game/${game._id}`)}>
                 <img src={game.capa} alt="" />
                 <Titulo>{game.titulo}</Titulo>
             </Banner>
             <Footer>
-                <Carrinho>
+                <Carrinho onClick={() => addToCart(game)}>
                     <span>R$ {game.valor}</span>
                 </Carrinho>
             </Footer>

@@ -1,6 +1,6 @@
 import { createContext, useState } from 'react';
 
-const UserContext = createContext(undefined);
+export const UserContext = createContext(null);
 
 const UserAuthProvider = ({ children }) => {
     const [userData, setUserData] = useState({
@@ -9,7 +9,7 @@ const UserAuthProvider = ({ children }) => {
         },
         token: "",
     });
-
+    console.log(userData);
     return (
         <UserContext.Provider value={{ userData, setUserData }}>
             {children}

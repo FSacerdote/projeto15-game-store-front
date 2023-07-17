@@ -8,17 +8,17 @@ import GamePage from "./pages/GamePage";
 import Cart from "./pages/Cart";
 import SuaLoja from "./pages/SuaLoja"
 import NovoJogo from "./pages/NovoJogo"
-import { UserContextProvider } from "./components/UserContext"
+import UserAuthProvider from "./context/UserAuthContext"
 import Editar from "./pages/Editar"
 import SignUpPage from "./pages/SignUpPage";
 import SignInPage from "./pages/SignInPage";
-
+console.log(UserAuthProvider);
 
 function App() {
   return (
     <BrowserRouter>
       <ItemsContextProvider>
-        <UserContextProvider>
+        <UserAuthProvider>
           <ResetCss />
           <GlobalStyle />
           <Routes>
@@ -31,7 +31,7 @@ function App() {
             <Route path="/novo-jogo" element={<NovoJogo />} />
             <Route path="/editar/:id" element={<Editar />} />
           </Routes>
-        </UserContextProvider>
+        </UserAuthProvider>
       </ItemsContextProvider>
     </BrowserRouter>
   )
