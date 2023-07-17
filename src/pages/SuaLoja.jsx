@@ -6,13 +6,13 @@ import axios from "axios"
 import Produto from "../components/Produto"
 import { useNavigate } from "react-router"
 import { UserContext } from "../context/UserAuthContext"
+import { Link } from "react-router-dom"
 
 export default function SuaLoja() {
 
     const [games, setGames] = useState([])
     const navigate = useNavigate()
-    const { userData: token } = useContext(UserContext)
-
+    const { userData: { token } } = useContext(UserContext)
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
@@ -20,14 +20,18 @@ export default function SuaLoja() {
     }
 
     useEffect(() => {
-        if (!token) {
-            navigate("/login")
+        if (!token.length) {
+            navigate("/login");
+            return;
         }
+
         axios.get(`${import.meta.env.VITE_API_URL}/meusjogos`, config)
             .then((resposta) => {
-                setGames(resposta.data.games)
+                if (resposta.data.games.length > 0) {
+                    setGames(resposta.data.games);
+                }
             })
-            .catch((erro) => console.log(erro.message))
+            .catch((erro) => console.log(erro.message));
     }, [])
 
     return (
@@ -39,7 +43,12 @@ export default function SuaLoja() {
                     <button onClick={() => navigate("/novo-jogo")}>+</button>
                 </Topo>
                 <GamesContainer>
-                    {games.map((game) => <Produto key={game._id} game={game} />)}
+                    {games.length > 0
+                        ? games.map((game) => <Produto key={game._id} game={game} />)
+                        : <Link>
+                            "Nenhum jogo por aqui... Adicione o seu primeiro jogo na loja."
+                        </Link>
+                    }
                 </GamesContainer>
             </Corpo>
         </Loja>
@@ -57,7 +66,7 @@ const Loja = styled.div`
 const Corpo = styled.div`
     margin-top: 70px;
     padding-top: 10px;
-    width: 1250px;
+    width: 90%;
 `
 
 const Topo = styled.div`

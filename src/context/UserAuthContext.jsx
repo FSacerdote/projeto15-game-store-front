@@ -1,15 +1,10 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 
 export const UserContext = createContext(null);
 
 const UserAuthProvider = ({ children }) => {
-    const [userData, setUserData] = useState({
-        userInfo: {
+    const [userData, setUserData] = useState(JSON.parse(localStorage.getItem("game-store")) || { userInfo: {}, token: "" });
 
-        },
-        token: "",
-    });
-    console.log(userData);
     return (
         <UserContext.Provider value={{ userData, setUserData }}>
             {children}
