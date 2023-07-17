@@ -16,6 +16,7 @@ export default async (userData, selectedItems, token) => {
   console.log(request);
 
   if (request.status === 201) success = true;
+  else { reqMessage = request.response.data }
 
-  return success;
+  return success, reqMessage;
 }

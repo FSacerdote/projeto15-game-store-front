@@ -84,8 +84,8 @@ const Cart = () => {
             reqBody.comprador = userData.userInfo.userId;
         }
 
-        const reqStatus = finishOrder(reqBody, itemsToSend, token);
-        showStatus(reqStatus);
+        const [reqStatus, reqMessage] = finishOrder(reqBody, itemsToSend, token);
+        showStatus(reqStatus, reqMessage);
     };
 
     return (
@@ -109,7 +109,7 @@ const Cart = () => {
                             justifyContent: "flex-start",
                             gap: "40px",
                             width: "50%",
-                            height: "300px",
+                            height: "500px",
                             overflowX: "hidden",
                         }}>
                             {selectedItems.items.map(item => item.itemQtde > 0 &&
@@ -156,7 +156,7 @@ const Cart = () => {
                     </div>
 
                     <button>Finalizar pedido</button>
-                    <h3 name="total">Total: {selectedItems.total}</h3>
+                    <h3 name="total">Total: {selectedItems.total.toFixed(2)}</h3>
                 </form>
             </Container >
         </>
