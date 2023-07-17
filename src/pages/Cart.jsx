@@ -53,29 +53,53 @@ const Cart = () => {
         email: "",
         frete: "gratis",
     });
-    const [requestStatus, setRequestStatus] = useState(false);
+    const [requestStatus, setRequestStatus] = useState({
+        ok: false,
+        show: false,
+        message: "",
+    });
 
     const handleSubmit = (ev) => {
         ev.preventDefault();
         const itemsToSend = selectedItems.items.filter(item => item.itemQtde > 0);
+
+        const showStatus = (status, message = "") => {
+            const obj = {
+                ok: status,
+                show: true,
+            };
+            if (message.length !== "") obj.message = message;
+
+            setRequestStatus(obj);
+            setTimeout(() => {
+                setRequestStatus(prev => ({ ...prev, show: false }));
+            }, 2000);
+        };
+
+        if (itemsToSend.length == 0) { showStatus(false, "Adicione items ao seu carrinho para fazer um pedido."); return; }
+
         const reqBody = { ...formData };
         const token = userData.token;
         if (userData.token.length > 0) {
             reqBody.comprador = userData.userInfo.userId;
         }
 
-        const request = finishOrder(reqBody, itemsToSend, token);
-
-        setRequestStatus(true);
-        setTimeout(() => {
-            setRequestStatus(false);
-        }, 3000);
+        const reqStatus = finishOrder(reqBody, itemsToSend, token);
+        showStatus(reqStatus);
     };
 
     return (
         <>
             <NavBar />
-            {/* <ReqStatus></ReqStatus> */}
+            <ReqStatus style={{
+                display: `${requestStatus.show ? "flex" : "none"}`,
+            }}><h1>
+                    {requestStatus.ok
+                        ? "Pedido realizado com sucesso!"
+                        : requestStatus.message !== "" ? requestStatus.message
+                            : "Ocorreu um problema ao realizar o seu pedido, tente novamente em alguns instantes..."
+                    }
+                </h1></ReqStatus>
             <Container>
                 {
                     !!selectedItems.items.find(item => item.itemQtde > 0) ?
@@ -293,6 +317,46 @@ const ItemContainer = styled.div`
             box-shadow: 2px 2px 1px #ff61c6ff;
             background-color: #0a0c37ff;
         }
+    }
+`;
+
+const ReqStatus = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+
+    position: fixed;
+    top: 180px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+
+    width: 800px;
+    height: 250px;
+    opacity: 0.7;
+
+    border: 0.1em solid transparent;
+    background-image: linear-gradient(#000, #000),
+    linear-gradient(120deg, #f09 0%, #0ff 50%, #9f0 100%);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    border-radius: 1.8em;
+    background-size: 200% 100%;
+    transition: background-position 0.8s ease-out;
+
+    &:hover {
+        background-position: 100% 0;
+    }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    
+    h1 {
+        color: #FFF;
     }
 `;
 

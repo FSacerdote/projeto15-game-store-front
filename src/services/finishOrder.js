@@ -1,18 +1,21 @@
 import axios from "axios";
 
-export default (userData, selectedItems, token) => {
+export default async (userData, selectedItems, token) => {
   let success = false;
+  let reqMessage = "";
 
   const config = token ? {
     headers: {
       Authorization: `Bearer ${token}`
     }
   } : {};
-  axios.post(`${import.meta.env.VITE_API_URL}/carrinho`, {
+  const request = await axios.post(`${import.meta.env.VITE_API_URL}/carrinho`, {
     userInfo: { ...userData },
     selectedItems,
-  }, config).then(() => success = true)
-    .catch(err => console.log(err.response));
+  }, config)
+  console.log(request);
+
+  if (request.status === 201) success = true;
 
   return success;
 }
